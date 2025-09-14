@@ -1,0 +1,50 @@
+@startuml Quantum_Actor_Network_Attack
+
+!define GOOD_ACTOR #00FF88
+!define VULNERABLE #FFAA00
+!define MALICIOUS #FF0044
+
+title OBINexus Quantum Actor Network - Eve Attack Vector
+
+package "Trust Network (t=0)" {
+    agent "Nnamdi\n95.4%" as N <<GOOD_ACTOR>>
+    agent "Jane\n95.4%" as J <<GOOD_ACTOR>>
+    agent "James\n95.5%" as JM <<GOOD_ACTOR>>
+    agent "Jenny\n95.6%" as JN <<GOOD_ACTOR>>
+    agent "Dean\n95.2%" as D <<VULNERABLE>>
+    agent "Eve\n95.4%" as E <<MALICIOUS>>
+}
+
+package "Attack Propagation (t=1→5)" {
+    component "Git-RAF" as GIT
+    component "Production" as PROD
+    database "Contract" as CONTRACT
+}
+
+' Quantum entanglement connections
+N <--> J : trusted
+J <--> JM : trusted  
+JM <--> JN : trusted
+N <--> D : trusted
+
+' Attack vector
+E -[#FF0044,bold]-> D : exploits_fatigue
+E -[#FF0044,dashed]-> GIT : injects_malware
+D -[#FFAA00]-> GIT : tired_approval
+GIT -[#FF0044]-> PROD : propagates
+PROD -[#FF0044]-> CONTRACT : compromises
+
+note right of E
+  Eve appears legitimate (95.4%)
+  but injects malware when
+  Dean is vulnerable (95.2%)
+end note
+
+note bottom of CONTRACT
+  UUID Trace: abc-123-def
+  AuraSeal: BYPASSED
+  Gates: Gx=1, Gy=1, Gz=0
+  Safety: S=0 (FAIL-SAFE)
+end note
+
+@enduml
